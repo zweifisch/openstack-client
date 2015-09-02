@@ -1,0 +1,5 @@
+((files "openstack-client.setup"
+        "openstack-client.scm")
+ (licence "BSD")
+ (author "Feng Zhou")
+ (synopsis "openstack client"))

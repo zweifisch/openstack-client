@@ -1,0 +1,8 @@
+
+(compile -s -O3 -d1 "openstack-client.scm" -j openstack-client)
+(compile -s -O3 -d0 "openstack-client.import.scm")
+
+(install-extension
+ 'openstack-client
+ '("openstack-client.so" "openstack-client.import.so")
+ '((version 0.0.1)))

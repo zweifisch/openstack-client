@@ -1,0 +1,10 @@
+* openstack-client
+
+/openstack-client for chicken scheme/
+
+#+BEGIN_SRC scheme
+(use openstack-client)
+
+(let ((token (login "http://127.0.0.1:5000/v3" "admin" "secret")))
+  (network-list token))
+#+END_SRC

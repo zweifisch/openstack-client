@@ -5,8 +5,6 @@
 
   (use http-client intarweb uri-common medea clojurian-syntax matchable data-structures srfi-13 srfi-1)
 
-  (json-parsers (cons `(array . ,identity) (json-parsers)))
-
   (define (login url name password #!key (domain-name "default"))
     (let* ((uri (uri-reference (conc url "/auth/tokens")))
            (payload `((auth . ((identity . ((methods . #("password"))
@@ -26,10 +24,10 @@
 
   (define (get-endpoint token service #!optional (interface "public"))
     (->> token
-         (assoc 'catalog) cdr
+         (assoc 'catalog) cdr vector->list
          (find (lambda (endpoint)
                  (string= service (cdr (assoc 'type endpoint)))))
-         (assoc 'endpoints) cdr
+         (assoc 'endpoints) cdr vector->list
          (find (lambda (endpoint)
                  (string= interface
                           (cdr (assoc 'interface endpoint)))))
@@ -65,10 +63,11 @@
             (define (,list-res token #!optional query)
               (->>
                (request token ,service ,path query: query)
-               (alist-ref (string->symbol ,plural))))
+               (alist-ref (string->symbol ,plural))
+               vector->list))
             (define (,get-res token id #!optional query)
               (as->
-               (request token ,service (conc ,path "/" id) query: query)
+               (request token ,service (conc ,path "/" id) query: query) x
                (alist-ref (string->symbol ,singular) x eqv? x)))
             (define (,create-res token body)
               (as->
